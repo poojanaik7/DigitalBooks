@@ -1,10 +1,10 @@
-package com.hnt;
+package com.bezkoder.springjwt;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OrderServiceApplicationTests {
+class SpringBootSecurityJwtApplicationTests {
 
 	@Test
 	void contextLoads() {
