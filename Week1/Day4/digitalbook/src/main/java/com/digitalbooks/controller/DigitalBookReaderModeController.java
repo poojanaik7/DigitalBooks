@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/digitalbooks")
+@RequestMapping("/api/digitalbooks/reader")
 public class DigitalBookReaderModeController {
     @Autowired
     DigitalBookService userService;
@@ -25,20 +25,20 @@ public class DigitalBookReaderModeController {
     @PostMapping("/buy")
     public String buyBook(@RequestBody BookRequest bookRequest){
         Payment payment = userService.buyBook(bookRequest);
-        return "Reader purchased book successfully"+payment.getPaymentId();
+        return "Reader purchased book successfully. Payment Id:"+payment.getPaymentId();
     }
 
-    @GetMapping("/id/book")
-    public List<Payment> readPaymentDetails(@RequestBody Payment payment){
-        return userService.getPaymentDetails(payment);
+    @GetMapping("/{id}/books")
+    public List<PaymentModel> readPaymentDetails(@PathVariable Integer id){
+        return userService.getPaymentDetails(id);
     }
 
-    @GetMapping("/id/books/{bookId}")
-    public String readContent(@RequestBody BookRequest bookRequest,@PathVariable Integer bookId){
+    @GetMapping("/books/{bookId}")
+    public String readContent(@PathVariable Integer bookId){
         return userService.readContent(bookId);
     }
 
-    @GetMapping("/id/books")
+    @GetMapping("/books")
     public PaymentModel getPaymentById(@RequestParam Long paymentId){
         return userService.getPaymentDetailsById(paymentId);
     }

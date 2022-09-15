@@ -2,6 +2,7 @@ package com.digitalbooks.model;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 public class BookResponse {
 
@@ -12,7 +13,7 @@ public class BookResponse {
     private String publisher;
 
     @NotEmpty
-    private String releaseDate;
+    private Date releaseDate;
 
     @NotEmpty
     private String category;
@@ -26,12 +27,13 @@ public class BookResponse {
     @NotEmpty
     private String content;
 
+    @NotNull
     private Boolean active;
 
     public BookResponse(){
     }
 
-    public BookResponse( String title, String publisher, String releaseDate, String category, Long price, String author, String content, Boolean active) {
+    public BookResponse(String title, String publisher, Date releaseDate, String category, Long price, String author, String content, Boolean active) {
         this.title = title;
         this.publisher = publisher;
         this.releaseDate = releaseDate;
@@ -58,11 +60,11 @@ public class BookResponse {
         this.publisher = publisher;
     }
 
-    public String getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 

@@ -31,7 +31,7 @@ public class DigitalBookService {
         List<BookResponse> bookResponseList = new ArrayList<>();
         bookList.forEach(book ->
               bookResponseList.add(new BookResponse(book.getTitle(),book.getPublisher(),book.getReleaseDate(),book.getCategory(),
-                                book.getPrice(),book.getCategory(),book.getContent(),book.getActive()))
+                                book.getPrice(),book.getUser().getUsername(),book.getContent(),book.getActive()))
                 );
         return bookResponseList;
     }
@@ -44,12 +44,14 @@ public class DigitalBookService {
         return bookRepository.save(book);
     }
 
-    public Book updateeBookDetails(BookRequest request,Integer bookId) {
+    public BookResponse updateeBookDetails(BookRequest request,Integer authorId,Integer bookId) {
         User user = new User();
-        user.setId(bookId);
+        user.setId(authorId);
         Book book = new Book(request.getResponse().getTitle(),request.getResponse().getPublisher(),request.getResponse().getReleaseDate(),request.getResponse().getCategory(),
                 request.getResponse().getPrice(),request.getResponse().getActive(),user,request.getResponse().getContent());
-        return bookRepository.save(book);
+        book.setBookId(bookId);
+        bookRepository.save(book);
+        return request.getResponse();
     }
 
     public Payment buyBook(BookRequest request){
@@ -61,8 +63,13 @@ public class DigitalBookService {
         return paymentRepository.save(payment);
     }
 
-    public List<Payment> getPaymentDetails(Payment payment){
-        return paymentRepository.findByUserUserId(payment.getUser().getId());
+    public List<PaymentModel> getPaymentDetails(Integer id){
+        List<Payment> paymentList = paymentRepository.findByUserUserId(id);
+        List<PaymentModel> paymentModels = new ArrayList<>();
+        paymentList.forEach(payment ->
+                        paymentModels.add(new PaymentModel(payment.getPaymentId(),payment.getPaymentDate(),payment.getUser().getUsername(),payment.getBook().getBookId()))
+                );
+        return paymentModels;
     }
 
     public String readContent(Integer bookId){

@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/digitalbooks/auth")
+@RequestMapping("/api/digitalbooks")
 public class AuthController {
 	@Autowired
 	AuthenticationManager authenticationManager;

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface DigitalBookRepository extends JpaRepository<Book, Integer> {
 
-    @Query(value = "SELECT b FROM Book b where b.category=?1 and b.user.username=?2 and b.price=?3 and b.publisher=?4 and b.activeFlag=1")
+    @Query(value = "SELECT b FROM Book b where (b.category=?1 or b.user.username=?2 or b.price=?3 or b.publisher=?4) and b.activeFlag=1")
     public List<Book> getBookDetails(String category, String author, Long price, String publisher);
 
 

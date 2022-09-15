@@ -1,11 +1,14 @@
 package com.digitalbooks.model;
 
+import javax.validation.constraints.NotNull;
+
 public class BookRequest {
 
     private Integer bookId;
 
     private Integer userId;
 
+    @NotNull
     private BookResponse response;
 
     public Integer getBookId() {

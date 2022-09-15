@@ -16,6 +16,16 @@ public class PaymentModel {
 
     private Integer bookId;
 
+    public PaymentModel(){
+    }
+
+    public PaymentModel(Long paymentId, Date paymentDate, String readerName, Integer bookId) {
+        this.paymentId = paymentId;
+        this.paymentDate = paymentDate;
+        this.readerName = readerName;
+        this.bookId = bookId;
+    }
+
     public Long getPaymentId() {
         return paymentId;
     }

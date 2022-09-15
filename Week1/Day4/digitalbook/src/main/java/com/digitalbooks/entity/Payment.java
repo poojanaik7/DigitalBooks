@@ -1,6 +1,8 @@
 package com.digitalbooks.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -10,6 +12,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long paymentId;
 
+    @NotNull
     private Date paymentDate;
 
     @ManyToOne
@@ -17,6 +20,9 @@ public class Payment {
 
     @ManyToOne
     private User user;
+
+    public Payment(){
+    }
 
     public Payment(Date paymentDate, Book book, User user) {
         this.paymentDate = paymentDate;

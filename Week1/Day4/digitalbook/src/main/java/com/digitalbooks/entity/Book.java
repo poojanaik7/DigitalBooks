@@ -1,6 +1,10 @@
 package com.digitalbooks.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Entity
 public class Book {
@@ -9,27 +13,34 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer bookId;
 
+    @NotBlank(message = "Title cannot be blank")
     private String title;
 
+    @NotBlank(message = "Publisher cannot be blank")
     private String publisher;
 
-    private String releaseDate;
+    @NotNull(message = "Release cannot be null")
+    private Date releaseDate;
 
+    @NotBlank(message = "Category cannot be blank")
     private String category;
 
+    @NotNull(message = "Price cannot be null")
     private Long price;
 
+    @NotNull(message = "Active flag cannot be null")
     private Boolean activeFlag;
 
     @ManyToOne
     private User user;
 
+    @NotEmpty(message = "Content cannot be blank")
     private String content;
 
     public Book() {
     }
 
-    public Book(String title, String publisher, String releaseDate, String category, Long price, Boolean active, User user, String content) {
+    public Book(String title, String publisher, Date releaseDate, String category, Long price, Boolean active, User user, String content) {
         this.title = title;
         this.publisher = publisher;
         this.releaseDate = releaseDate;
@@ -37,6 +48,16 @@ public class Book {
         this.price = price;
         this.activeFlag = active;
         this.user = user;
+        this.content = content;
+    }
+
+    public Book(String title, String publisher, Date releaseDate, String category, Long price,Boolean activeFlag,String content) {
+        this.title = title;
+        this.publisher = publisher;
+        this.releaseDate = releaseDate;
+        this.category = category;
+        this.price = price;
+        this.activeFlag = activeFlag;
         this.content = content;
     }
 
@@ -72,11 +93,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public String getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 
