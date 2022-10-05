@@ -21,7 +21,7 @@ public class BaseController {
     }
 
     @ExceptionHandler(ResultNotFoundException.class)
-    ResponseEntity<?> handleBookNotFoundException(ResultNotFoundException ex) {
+    ResponseEntity<?> handleResultNotFoundException(ResultNotFoundException ex) {
         return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

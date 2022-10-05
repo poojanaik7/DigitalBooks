@@ -4,7 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,7 +37,7 @@ public class User {
     @JoinTable(	name = "book_user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<BookRole> roles = new HashSet<>();
+    private List<BookRole> roles = new ArrayList<>();
 
     public User(String username, String email, String password) {
         this.username = username;
@@ -79,11 +81,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<BookRole> getRoles() {
+    public List<BookRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<BookRole> roles) {
+    public void setRoles(List<BookRole> roles) {
         this.roles = roles;
     }
 }

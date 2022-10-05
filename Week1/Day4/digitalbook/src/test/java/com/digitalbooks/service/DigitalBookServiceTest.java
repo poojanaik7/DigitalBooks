@@ -49,16 +49,16 @@ public class DigitalBookServiceTest {
         Book book = new Book("title","publisher",new Date(),"category",20l,true,user,"content");
         List<Book> bookList = new ArrayList<>();
         bookList.add(book);
-        Mockito.when(digitalBookRepository.getBookDetails("category","author",20l,"publisher")).thenReturn(bookList);
-        List<BookResponse> responses = digitalBookService.getBookDetails("category","author",20l,"publisher");
+        Mockito.when(digitalBookRepository.getBookDetails("title","author","publisher")).thenReturn(bookList);
+        List<BookResponse> responses = digitalBookService.getBookDetails("title","author","publisher");
         Assert.assertNotNull(responses);
     }
 
     @Test(expected = ResultNotFoundException.class)
     public void getBookDetailsException() {
         List<Book> bookList = new ArrayList<>();
-        Mockito.when(digitalBookRepository.getBookDetails("category","author",20l,"publisher")).thenReturn(bookList);
-        List<BookResponse> responses = digitalBookService.getBookDetails("category","author",20l,"publisher");
+        Mockito.when(digitalBookRepository.getBookDetails("title","author","publisher")).thenReturn(bookList);
+        List<BookResponse> responses = digitalBookService.getBookDetails("title","author","publisher");
         Assert.assertNotNull(responses);
     }
 
@@ -68,10 +68,7 @@ public class DigitalBookServiceTest {
         user.setId(123);
         Book book = new Book("title","publisher",new Date(),"category",20l,true,user,"content");
         Mockito.when(digitalBookRepository.save(Mockito.any())).thenReturn(book);
-        BookRequest bookRequest = new BookRequest();
-        bookRequest.setBookId(123);
-        BookResponse bookResponse = new BookResponse("title","publisher",new Date(),"category",20l,"author","content",true);
-        bookRequest.setResponse(bookResponse);
+        BookRequest bookRequest = new BookRequest(123,123,"title","publisher",new Date(),"category",20l,"author","content",true);
         bookRequest.setUserId(123);
         Book b = digitalBookService.createBook(bookRequest,123);
         Assert.assertNotNull(b);
@@ -81,8 +78,7 @@ public class DigitalBookServiceTest {
     public void createBookExceptionTest() throws Exception {
         User user = new User();
         user.setId(123);
-        BookRequest bookRequest = new BookRequest();
-        bookRequest.setBookId(123);
+        BookRequest bookRequest = new BookRequest(123,123,"title","publisher",new Date(),"category",20l,"author","content",true);
         Assert.assertNull(digitalBookService.createBook(bookRequest,123));
     }
 
@@ -92,12 +88,8 @@ public class DigitalBookServiceTest {
         user.setId(123);
         Book book = new Book("title","publisher",new Date(),"category",20l,true,user,"content");
         Mockito.when(digitalBookRepository.save(Mockito.any())).thenReturn(book);
-        BookRequest bookRequest = new BookRequest();
-        bookRequest.setBookId(123);
-        BookResponse bookResponse = new BookResponse("title","publisher",new Date(),"category",20l,"author","content",true);
-        bookRequest.setResponse(bookResponse);
-        bookRequest.setUserId(123);
-        BookResponse bookResponse1 = digitalBookService.updateeBookDetails(bookRequest,123,123);
+        BookRequest bookRequest = new BookRequest(123,123,"title","publisher",new Date(),"category",20l,"author","content",true);
+        Book bookResponse1 = digitalBookService.updateeBookDetails(bookRequest,123,123);
         Assert.assertNotNull(bookResponse1);
     }
 
@@ -121,14 +113,14 @@ public class DigitalBookServiceTest {
         Book book = new Book("title","publisher",new Date(),"category",20l,true,user,"content");
         Payment payment = new Payment(new Date(),book,user);
         Mockito.when(paymentRepository.save(Mockito.any())).thenReturn(payment);
-        Payment p = digitalBookService.buyBook(paymentRequest);
+        Payment p = digitalBookService.buyBook(123,123);
         Assert.assertNotNull(p);
     }
 
     @Test(expected = DigitalBookException.class)
     public void buyBookException() throws Exception{
         PaymentRequest paymentRequest = null;
-        digitalBookService.buyBook(paymentRequest);
+        digitalBookService.buyBook(123,123);
     }
 
     @Test

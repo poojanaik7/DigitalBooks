@@ -21,9 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AuthControllerTest {
@@ -73,7 +71,7 @@ public class AuthControllerTest {
     @Test
     public void registerReaderTest() {
         SignupRequest signupRequest = new SignupRequest();
-        Set<String> strRoles = new HashSet<>();
+        List<String> strRoles = new ArrayList<>();
         strRoles.add("user");
         signupRequest.setEmail("pnaik@1.com");
         signupRequest.setUsername("pnaik");
@@ -94,7 +92,7 @@ public class AuthControllerTest {
     @Test(expected = RuntimeException.class)
     public void registerUserExceptionTest() {
         SignupRequest signupRequest = new SignupRequest();
-        Set<String> strRoles = new HashSet<>();
+        List<String> strRoles = new ArrayList<>();
         strRoles.add("ROLE_AUTHOR");
         signupRequest.setEmail("pnaik@1.com");
         signupRequest.setUsername("pnaik");
@@ -110,7 +108,7 @@ public class AuthControllerTest {
     @Test
     public void registerAuthorTest() {
         SignupRequest signupRequest = new SignupRequest();
-        Set<String> strRoles = new HashSet<>();
+        List<String> strRoles = new ArrayList<>();
         strRoles.add("ROLE_AUTHOR");
         signupRequest.setEmail("pnaik@1.com");
         signupRequest.setUsername("pnaik");

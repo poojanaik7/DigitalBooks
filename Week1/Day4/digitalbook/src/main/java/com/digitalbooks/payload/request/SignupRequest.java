@@ -3,6 +3,7 @@ package com.digitalbooks.payload.request;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 
 public class SignupRequest {
@@ -19,7 +20,7 @@ public class SignupRequest {
     @Size(min = 6, max = 40)
     private String password;
 
-    private Set<String> role;
+    private List<String> role;
   
     public String getUsername() {
         return username;
@@ -45,11 +46,11 @@ public class SignupRequest {
         this.password = password;
     }
 
-    public Set<String> getRole() {
+    public List<String> getRole() {
         return role;
     }
 
-    public void setRole(Set<String> role) {
+    public void setRole(List<String> role) {
         this.role = role;
     }
 }

@@ -28,23 +28,17 @@ public class DigitalBookAuthorControllerTest {
 
     @Test
     public void createBookTest() throws Exception{
-        BookRequest bookRequest = new BookRequest();
-        bookRequest.setBookId(123);
+        BookRequest bookRequest = new BookRequest(123,123,"title","publisher",new Date(),"category",20l,"author","content",true);
         Book book = new Book("title","publisher",new Date(),"category",20l,true,null,"content");
-        BookResponse bookResponse = new BookResponse("title","publisher",new Date(),"category",20l,"author","content",true);
-        bookRequest.setResponse(bookResponse);
         Mockito.when(userService.createBook(bookRequest,123)).thenReturn(book);
         Assert.assertNotNull(digitalBookAuthorController.createBook(bookRequest,123));
     }
 
     @Test
     public void UpdateBookDetailsTest() throws Exception{
-        BookRequest bookRequest = new BookRequest();
-        bookRequest.setBookId(123);
+        BookRequest bookRequest = new BookRequest(123,123,"title","publisher",new Date(),"category",20l,"author","content",true);
         Book book = new Book("title","publisher",new Date(),"category",20l,true,null,"content");
-        BookResponse bookResponse = new BookResponse("title","publisher",new Date(),"category",20l,"author","content",true);
-        bookRequest.setResponse(bookResponse);
-        Mockito.when(userService.updateeBookDetails(bookRequest,123,123)).thenReturn(bookResponse);
+        Mockito.when(userService.updateeBookDetails(bookRequest,123,123)).thenReturn(book);
         Assert.assertNotNull(digitalBookAuthorController.updateBookDetails(bookRequest,123,123));
     }
 

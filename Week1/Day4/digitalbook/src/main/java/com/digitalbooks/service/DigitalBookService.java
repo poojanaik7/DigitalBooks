@@ -13,6 +13,7 @@ import com.digitalbooks.repository.DigitalBookRepository;
 import com.digitalbooks.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,13 +30,28 @@ public class DigitalBookService {
     @Autowired
     PaymentRepository paymentRepository;
 
-    public List<BookResponse> getBookDetails(String category, String author, Long price, String publisher) {
-        List<Book> bookList = bookRepository.getBookDetails(category,author,price,publisher);
+    public List<BookResponse> getBookDetails(String title, String author,String publisher) {
+        List<Book> bookList = bookRepository.getBookDetails(title,author,publisher);
         List<BookResponse> bookResponseList = new ArrayList<>();
         if(!bookList.isEmpty()) {
             bookList.forEach(book ->
                     bookResponseList.add(new BookResponse(book.getTitle(), book.getPublisher(), book.getReleaseDate(), book.getCategory(),
-                            book.getPrice(), book.getUser().getUsername(), book.getContent(), book.getActive()))
+                            book.getPrice(), book.getUser().getUsername(), book.getContent(), book.getActive(),book.getBookId()))
+            );
+        }
+        else{
+            throw new ResultNotFoundException("Book not found/Book is not active");
+        }
+        return bookResponseList;
+    }
+
+    public List<BookResponse> getAllBookDetails() {
+        List<Book> bookList = bookRepository.findAll();
+        List<BookResponse> bookResponseList = new ArrayList<>();
+        if(!bookList.isEmpty()) {
+            bookList.forEach(book ->
+                    bookResponseList.add(new BookResponse(book.getTitle(), book.getPublisher(), book.getReleaseDate(), book.getCategory(),
+                            book.getPrice(), book.getUser().getUsername(), book.getContent(), book.getActive(),book.getBookId()))
             );
         }
         else{
@@ -48,36 +64,50 @@ public class DigitalBookService {
        try {
            User user = new User();
            user.setId(authorId);
-           Book book = new Book(request.getResponse().getTitle(), request.getResponse().getPublisher(), request.getResponse().getReleaseDate(), request.getResponse().getCategory(),
-                   request.getResponse().getPrice(), request.getResponse().getActive(), user, request.getResponse().getContent());
+           Book book = new Book(request.getTitle(), request.getPublisher(), request.getReleaseDate(), request.getCategory(),
+                   request.getPrice(), request.getActive(), user, request.getContent());
            return bookRepository.save(book);
        }
        catch (Exception e){
-           throw new DigitalBookException("Exception while persisting into db please try again");
+           throw new DigitalBookException("Exception while persisting into db please try again later");
        }
     }
 
-    public BookResponse updateeBookDetails(BookRequest request,Integer authorId,Integer bookId) throws SQLException,DigitalBookException {
+    public Book updateeBookDetails(BookRequest request,Integer authorId,Integer bookId) throws SQLException,DigitalBookException {
         try {
             User user = new User();
             user.setId(authorId);
-            Book book = new Book(request.getResponse().getTitle(),request.getResponse().getPublisher(),request.getResponse().getReleaseDate(),request.getResponse().getCategory(),
-                    request.getResponse().getPrice(),request.getResponse().getActive(),user,request.getResponse().getContent());
+            Book book = new Book(request.getTitle(),request.getPublisher(),request.getReleaseDate(),request.getCategory(),
+                    request.getPrice(),request.getActive(),user,request.getContent());
             book.setBookId(bookId);
-            bookRepository.save(book);
+            return bookRepository.save(book);
         }
         catch (Exception e){
-            throw new DigitalBookException("Exception while persisting into db please try again");
+            throw new DigitalBookException("Exception while persisting into db please try again later");
         }
-        return request.getResponse();
     }
 
-    public Payment buyBook(PaymentRequest request) throws SQLException,DigitalBookException{
+    public List<BookResponse> getAllBookDetails(Integer authorId) {
+        List<Book> bookList = bookRepository.findByUserUserId(authorId);
+        List<BookResponse> bookResponseList = new ArrayList<>();
+        if(!bookList.isEmpty()) {
+            bookList.forEach(book ->
+                    bookResponseList.add(new BookResponse(book.getTitle(), book.getPublisher(), book.getReleaseDate(), book.getCategory(),
+                            book.getPrice(), book.getUser().getUsername(), book.getContent(), book.getActive(),book.getBookId()))
+            );
+        }
+        else{
+            throw new ResultNotFoundException("Book not found/Book is not active");
+        }
+        return bookResponseList;
+    }
+
+    public Payment buyBook(Integer userId,Integer bookId) throws SQLException,DigitalBookException{
         try {
             Book book = new Book();
-            book.setBookId(request.getBookId());
+            book.setBookId(bookId);
             User user = new User();
-            user.setId(request.getUserId());
+            user.setId(userId);
             Payment payment = new Payment(new Date(),book,user);
             return paymentRepository.save(payment);
         }
@@ -101,10 +131,10 @@ public class DigitalBookService {
         }
     }
 
-    public String readContent(Integer bookId){
+    public Book readContent(Integer bookId){
         Book book = bookRepository.findById(bookId).
                 orElseThrow(()-> new ResultNotFoundException("Unable to fetch the content"));
-        return book.getContent();
+        return book;
     }
 
     public PaymentModel getPaymentDetailsById(Long paymentId){

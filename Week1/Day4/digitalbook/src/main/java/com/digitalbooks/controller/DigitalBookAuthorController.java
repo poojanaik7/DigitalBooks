@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.SQLException;
+import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/digitalbooks/author")
 public class DigitalBookAuthorController extends BaseController{
@@ -32,7 +34,14 @@ public class DigitalBookAuthorController extends BaseController{
     @PutMapping("/{authorId}/books/{bookId}")
     @PreAuthorize("hasRole('ROLE_AUTHOR')")
     public ResponseEntity<?> updateBookDetails(@Valid @RequestBody BookRequest request, @PathVariable Integer authorId, @PathVariable Integer bookId) throws SQLException, DigitalBookException {
-       BookResponse bookResponse = userService.updateeBookDetails(request,authorId,bookId);
+        userService.updateeBookDetails(request,authorId,bookId);
        return ResponseEntity.ok(new MessageResponse("Book Details has been updated successfully."));
+    }
+
+    @GetMapping("/{authorId}/booksDetails")
+    @PreAuthorize("hasRole('ROLE_AUTHOR')")
+    public ResponseEntity<?> getAllBookDetails(@PathVariable Integer authorId) throws SQLException, DigitalBookException {
+        List<BookResponse> bookResponse = userService.getAllBookDetails(authorId);
+        return ResponseEntity.ok(bookResponse);
     }
 }

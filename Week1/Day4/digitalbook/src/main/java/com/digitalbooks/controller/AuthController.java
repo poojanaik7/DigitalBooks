@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -65,8 +66,8 @@ public class AuthController extends BaseController{
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<BookRole> roles = new HashSet<>();
+        List<String> strRoles = signUpRequest.getRole();
+        List<BookRole> roles = new ArrayList<>();
 
         if (strRoles == null) {
             BookRole userRole = roleRepository.findByName(BRole.ROLE_READER)
@@ -91,7 +92,8 @@ public class AuthController extends BaseController{
         user.setRoles(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse(signUpRequest.getRole()+"registered successfully!"));
+
+        return ResponseEntity.ok(new MessageResponse(user.getRoles().get(0).toString() + "registered successfully!"));
     }
 
     @PostMapping("/signin")

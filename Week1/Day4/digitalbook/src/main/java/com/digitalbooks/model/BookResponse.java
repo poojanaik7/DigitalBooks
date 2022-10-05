@@ -6,6 +6,8 @@ import java.util.Date;
 
 public class BookResponse {
 
+    private Integer bookId;
+
     @NotEmpty
     private String title;
 
@@ -33,7 +35,8 @@ public class BookResponse {
     public BookResponse(){
     }
 
-    public BookResponse(String title, String publisher, Date releaseDate, String category, Long price, String author, String content, Boolean active) {
+    public BookResponse(String title, String publisher, Date releaseDate, String category,
+                        Long price, String author, String content, Boolean active, Integer bookId) {
         this.title = title;
         this.publisher = publisher;
         this.releaseDate = releaseDate;
@@ -42,6 +45,7 @@ public class BookResponse {
         this.author = author;
         this.content = content;
         this.active = active;
+        this.bookId=bookId;
     }
 
     public String getTitle() {
@@ -106,5 +110,13 @@ public class BookResponse {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Integer getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(Integer bookId) {
+        this.bookId = bookId;
     }
 }

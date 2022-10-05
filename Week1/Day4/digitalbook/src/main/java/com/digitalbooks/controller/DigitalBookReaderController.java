@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/digitalbooks/reader")
 public class DigitalBookReaderController extends BaseController{
@@ -22,15 +23,22 @@ public class DigitalBookReaderController extends BaseController{
     DigitalBookService userService;
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchBook(@RequestParam String category, @RequestParam String author, @RequestParam Long price, @RequestParam String publisher) {
-        List<BookResponse> bookResponse = userService.getBookDetails(category, author, price, publisher);
+    public ResponseEntity<?> searchBook(@RequestParam String title, @RequestParam String author, @RequestParam String publisher) {
+        List<BookResponse> bookResponse = userService.getBookDetails(title, author, publisher);
         return ResponseEntity.ok(bookResponse);
     }
 
-    @PostMapping("/buy")
+    @GetMapping("/searchBooks")
     @PreAuthorize("hasRole('ROLE_READER')")
-    public ResponseEntity<?> buyBook(@RequestBody PaymentRequest bookRequest) throws SQLException, DigitalBookException {
-        Payment payment = userService.buyBook(bookRequest);
+    public ResponseEntity<?> searchAllBook() {
+        List<BookResponse> bookResponse = userService.getAllBookDetails();
+        return ResponseEntity.ok(bookResponse);
+    }
+
+    @PostMapping("/buy/{userId}/{bookId}")
+    @PreAuthorize("hasRole('ROLE_READER')")
+    public ResponseEntity<?> buyBook(@PathVariable Integer userId,@PathVariable Integer bookId) throws SQLException, DigitalBookException {
+        Payment payment = userService.buyBook(userId,bookId);
         return ResponseEntity.ok(new MessageResponse("Reader purchased book successfully. Payment Id : "+payment.getPaymentId()));
     }
 
@@ -42,7 +50,6 @@ public class DigitalBookReaderController extends BaseController{
     }
 
     @GetMapping("/books/{bookId}")
-    @PreAuthorize("hasRole('ROLE_READER')")
     public ResponseEntity<?> readContent(@PathVariable Integer bookId){
         return ResponseEntity.ok(userService.readContent(bookId));
     }
