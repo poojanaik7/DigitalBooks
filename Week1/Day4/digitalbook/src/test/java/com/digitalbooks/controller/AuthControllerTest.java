@@ -71,12 +71,10 @@ public class AuthControllerTest {
     @Test
     public void registerReaderTest() {
         SignupRequest signupRequest = new SignupRequest();
-        List<String> strRoles = new ArrayList<>();
-        strRoles.add("user");
         signupRequest.setEmail("pnaik@1.com");
         signupRequest.setUsername("pnaik");
         signupRequest.setPassword("abcd");
-        signupRequest.setRole(strRoles);
+        signupRequest.setRole("reader");
         BookRole role = new BookRole();
         role.setName(BRole.ROLE_READER);
         role.setId(1);
@@ -92,12 +90,10 @@ public class AuthControllerTest {
     @Test(expected = RuntimeException.class)
     public void registerUserExceptionTest() {
         SignupRequest signupRequest = new SignupRequest();
-        List<String> strRoles = new ArrayList<>();
-        strRoles.add("ROLE_AUTHOR");
         signupRequest.setEmail("pnaik@1.com");
         signupRequest.setUsername("pnaik");
         signupRequest.setPassword("abcd");
-        signupRequest.setRole(strRoles);
+        signupRequest.setRole("Author");
         Mockito.when(userRepository.existsByEmail("pnaik@1.com")).thenReturn(false);
         Mockito.when(userRepository.existsByUsername("pnaik")).thenReturn(false);
         Mockito.when(passwordEncoder.encode(signupRequest.getPassword())).thenReturn("64767647fhdgffh");
@@ -108,12 +104,10 @@ public class AuthControllerTest {
     @Test
     public void registerAuthorTest() {
         SignupRequest signupRequest = new SignupRequest();
-        List<String> strRoles = new ArrayList<>();
-        strRoles.add("ROLE_AUTHOR");
         signupRequest.setEmail("pnaik@1.com");
         signupRequest.setUsername("pnaik");
         signupRequest.setPassword("abcd");
-        signupRequest.setRole(strRoles);
+        signupRequest.setRole("Author");
         BookRole role = new BookRole();
         role.setName(BRole.ROLE_READER);
         role.setId(1);

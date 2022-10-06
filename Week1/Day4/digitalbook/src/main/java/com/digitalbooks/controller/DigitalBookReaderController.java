@@ -36,7 +36,6 @@ public class DigitalBookReaderController extends BaseController{
     }
 
     @PostMapping("/buy/{userId}/{bookId}")
-    @PreAuthorize("hasRole('ROLE_READER')")
     public ResponseEntity<?> buyBook(@PathVariable Integer userId,@PathVariable Integer bookId) throws SQLException, DigitalBookException {
         Payment payment = userService.buyBook(userId,bookId);
         return ResponseEntity.ok(new MessageResponse("Reader purchased book successfully. Payment Id : "+payment.getPaymentId()));

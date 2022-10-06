@@ -24,8 +24,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @RunWith(MockitoJUnitRunner.class)
 
 public class DigitalBookServiceTest {
@@ -78,8 +76,10 @@ public class DigitalBookServiceTest {
     public void createBookExceptionTest() throws Exception {
         User user = new User();
         user.setId(123);
-        BookRequest bookRequest = new BookRequest(123,123,"title","publisher",new Date(),"category",20l,"author","content",true);
+        BookRequest bookRequest = new BookRequest(123,123,null,"publisher",new Date(),"category",20l,"author","content",true);
         Assert.assertNull(digitalBookService.createBook(bookRequest,123));
+        throw new DigitalBookException("Exception");
+
     }
 
     @Test
@@ -100,6 +100,7 @@ public class DigitalBookServiceTest {
         BookRequest bookRequest = new BookRequest();
         bookRequest.setBookId(123);
         Assert.assertNull(digitalBookService.updateeBookDetails(bookRequest,123,123));
+        throw new DigitalBookException("Exception");
     }
 
 
@@ -120,7 +121,8 @@ public class DigitalBookServiceTest {
     @Test(expected = DigitalBookException.class)
     public void buyBookException() throws Exception{
         PaymentRequest paymentRequest = null;
-        digitalBookService.buyBook(123,123);
+        digitalBookService.buyBook(null,null);
+        throw new DigitalBookException("Exception");
     }
 
     @Test

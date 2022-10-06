@@ -66,7 +66,7 @@ public class AuthController extends BaseController{
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
-        List<String> strRoles = signUpRequest.getRole();
+        String strRoles = signUpRequest.getRole();
         List<BookRole> roles = new ArrayList<>();
 
         if (strRoles == null) {
@@ -74,9 +74,8 @@ public class AuthController extends BaseController{
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "ROLE_AUTHOR":
+                switch (strRoles) {
+                    case "Author":
                         BookRole authorRole = roleRepository.findByName(BRole.ROLE_AUTHOR)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(authorRole);
@@ -86,14 +85,13 @@ public class AuthController extends BaseController{
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(readerRole);
                 }
-            });
         }
 
         user.setRoles(roles);
         userRepository.save(user);
 
 
-        return ResponseEntity.ok(new MessageResponse(user.getRoles().get(0).toString() + "registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse(strRoles + " registered successfully!"));
     }
 
     @PostMapping("/signin")
