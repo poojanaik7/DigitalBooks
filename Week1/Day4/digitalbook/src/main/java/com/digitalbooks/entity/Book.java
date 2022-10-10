@@ -51,7 +51,7 @@ public class Book {
         this.content = content;
     }
 
-    public Book(String title, String publisher, Date releaseDate, String category, Long price,Boolean activeFlag,String content) {
+    public Book(String title, String publisher, Date releaseDate, String category, Long price, Boolean activeFlag, String content) {
         this.title = title;
         this.publisher = publisher;
         this.releaseDate = releaseDate;

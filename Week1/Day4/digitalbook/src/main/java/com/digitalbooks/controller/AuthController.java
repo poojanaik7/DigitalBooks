@@ -23,15 +23,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/api/digitalbooks/auth")
-public class AuthController extends BaseController{
+public class AuthController extends BaseController {
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -74,17 +72,17 @@ public class AuthController extends BaseController{
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
-                switch (strRoles) {
-                    case "Author":
-                        BookRole authorRole = roleRepository.findByName(BRole.ROLE_AUTHOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(authorRole);
-                        break;
-                    default:
-                        BookRole readerRole = roleRepository.findByName(BRole.ROLE_READER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(readerRole);
-                }
+            switch (strRoles) {
+                case "Author":
+                    BookRole authorRole = roleRepository.findByName(BRole.ROLE_AUTHOR)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(authorRole);
+                    break;
+                default:
+                    BookRole readerRole = roleRepository.findByName(BRole.ROLE_READER)
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(readerRole);
+            }
         }
 
         user.setRoles(roles);
@@ -114,9 +112,8 @@ public class AuthController extends BaseController{
                     userDetails.getUsername(),
                     userDetails.getEmail(),
                     roles));
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

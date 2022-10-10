@@ -76,4 +76,14 @@ public class DigitalBookReaderControllerTest {
        ResponseEntity<?> entity = digitalBookReaderController.getPaymentById(12l);
        Assert.assertNotNull(entity);
     }
+
+    @Test
+    public void searchAllBookTest() {
+        BookResponse bookResponse = new BookResponse("title","publisher",new Date(),"category",20l,"author","content",true,123);
+        List<BookResponse> bookResponseList = new ArrayList<>();
+        bookResponseList.add(bookResponse);
+        Mockito.when(userService.getAllBookDetails()).thenReturn(bookResponseList);
+        ResponseEntity<?> res = digitalBookReaderController.searchAllBook();
+        Assert.assertNotNull(res);
+    }
 }

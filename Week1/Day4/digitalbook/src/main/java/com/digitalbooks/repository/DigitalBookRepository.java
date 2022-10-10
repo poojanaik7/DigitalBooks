@@ -13,5 +13,9 @@ public interface DigitalBookRepository extends JpaRepository<Book, Integer> {
     @Query(value = "SELECT b FROM Book b where b.title=?1 and b.user.username=?2 and b.publisher=?3 and b.activeFlag=1")
     public List<Book> getBookDetails(String title, String author, String publisher);
 
+    @Query(value = "SELECT b FROM Book b where b.user.userId=?1 and b.activeFlag=1")
     public List<Book> findByUserUserId(Integer userId);
+
+    @Query(value = "SELECT b FROM Book b where b.activeFlag=1")
+    public List<Book> findBooks();
 }

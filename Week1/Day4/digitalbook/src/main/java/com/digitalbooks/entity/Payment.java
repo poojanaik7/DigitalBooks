@@ -1,7 +1,6 @@
 package com.digitalbooks.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -21,7 +20,7 @@ public class Payment {
     @ManyToOne
     private User user;
 
-    public Payment(){
+    public Payment() {
     }
 
     public Payment(Date paymentDate, Book book, User user) {

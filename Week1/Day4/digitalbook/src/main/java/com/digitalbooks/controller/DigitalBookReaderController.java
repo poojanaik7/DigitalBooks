@@ -4,7 +4,6 @@ import com.digitalbooks.entity.Payment;
 import com.digitalbooks.exception.DigitalBookException;
 import com.digitalbooks.model.BookResponse;
 import com.digitalbooks.model.PaymentModel;
-import com.digitalbooks.model.PaymentRequest;
 import com.digitalbooks.payload.response.MessageResponse;
 import com.digitalbooks.service.DigitalBookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/digitalbooks/reader")
-public class DigitalBookReaderController extends BaseController{
+public class DigitalBookReaderController extends BaseController {
     @Autowired
     DigitalBookService userService;
 
@@ -36,26 +35,26 @@ public class DigitalBookReaderController extends BaseController{
     }
 
     @PostMapping("/buy/{userId}/{bookId}")
-    public ResponseEntity<?> buyBook(@PathVariable Integer userId,@PathVariable Integer bookId) throws SQLException, DigitalBookException {
-        Payment payment = userService.buyBook(userId,bookId);
-        return ResponseEntity.ok(new MessageResponse("Reader purchased book successfully. Payment Id : "+payment.getPaymentId()));
+    public ResponseEntity<?> buyBook(@PathVariable Integer userId, @PathVariable Integer bookId) throws SQLException, DigitalBookException {
+        Payment payment = userService.buyBook(userId, bookId);
+        return ResponseEntity.ok(new MessageResponse("Reader purchased book successfully. Payment Id : " + payment.getPaymentId()));
     }
 
     @GetMapping("/{id}/books")
     @PreAuthorize("hasRole('ROLE_READER')")
-    public ResponseEntity<?> readPaymentDetails(@PathVariable Integer id){
-       List<PaymentModel> paymentModelList = userService.getPaymentDetails(id);
-       return ResponseEntity.ok(paymentModelList);
+    public ResponseEntity<?> readPaymentDetails(@PathVariable Integer id) {
+        List<PaymentModel> paymentModelList = userService.getPaymentDetails(id);
+        return ResponseEntity.ok(paymentModelList);
     }
 
     @GetMapping("/books/{bookId}")
-    public ResponseEntity<?> readContent(@PathVariable Integer bookId){
+    public ResponseEntity<?> readContent(@PathVariable Integer bookId) {
         return ResponseEntity.ok(userService.readContent(bookId));
     }
 
     @GetMapping("/books")
     @PreAuthorize("hasRole('ROLE_READER')")
-    public ResponseEntity<?> getPaymentById(@RequestParam Long paymentId){
+    public ResponseEntity<?> getPaymentById(@RequestParam Long paymentId) {
         return ResponseEntity.ok(userService.getPaymentDetailsById(paymentId));
     }
 }
