@@ -4,7 +4,7 @@ public class PaymentRequest {
 
     private Integer bookId;
 
-    private Integer userId;
+    private String bookName;
 
     public Integer getBookId() {
         return bookId;
@@ -14,11 +14,11 @@ public class PaymentRequest {
         this.bookId = bookId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getBookName() {
+        return bookName;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
     }
 }

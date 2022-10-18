@@ -16,14 +16,17 @@ public class PaymentModel {
 
     private Integer bookId;
 
+    private String title;
+
     public PaymentModel(){
     }
 
-    public PaymentModel(Long paymentId, Date paymentDate, String readerName, Integer bookId) {
+    public PaymentModel(Long paymentId, Date paymentDate, String readerName, Integer bookId,String title) {
         this.paymentId = paymentId;
         this.paymentDate = paymentDate;
         this.readerName = readerName;
         this.bookId = bookId;
+        this.title = title;
     }
 
     public Long getPaymentId() {
@@ -56,5 +59,13 @@ public class PaymentModel {
 
     public void setBookId(Integer bookId) {
         this.bookId = bookId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

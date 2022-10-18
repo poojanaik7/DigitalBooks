@@ -4,6 +4,7 @@ import com.digitalbooks.entity.Payment;
 import com.digitalbooks.exception.DigitalBookException;
 import com.digitalbooks.model.BookResponse;
 import com.digitalbooks.model.PaymentModel;
+import com.digitalbooks.model.PaymentRequest;
 import com.digitalbooks.payload.response.MessageResponse;
 import com.digitalbooks.service.DigitalBookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,9 @@ public class DigitalBookReaderController extends BaseController {
         return ResponseEntity.ok(bookResponse);
     }
 
-    @PostMapping("/buy/{userId}/{bookId}")
-    public ResponseEntity<?> buyBook(@PathVariable Integer userId, @PathVariable Integer bookId) throws SQLException, DigitalBookException {
-        Payment payment = userService.buyBook(userId, bookId);
+    @PostMapping("/buy/{userId}")
+    public ResponseEntity<?> buyBook(@PathVariable Integer userId, @RequestBody PaymentRequest request) throws SQLException, DigitalBookException {
+        Payment payment = userService.buyBook(userId, request);
         return ResponseEntity.ok(new MessageResponse("Reader purchased book successfully. Payment Id : " + payment.getPaymentId()));
     }
 

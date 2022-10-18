@@ -8,6 +8,7 @@ import com.digitalbooks.exception.ResultNotFoundException;
 import com.digitalbooks.model.BookRequest;
 import com.digitalbooks.model.BookResponse;
 import com.digitalbooks.model.PaymentModel;
+import com.digitalbooks.model.PaymentRequest;
 import com.digitalbooks.repository.DigitalBookRepository;
 import com.digitalbooks.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,13 +95,14 @@ public class DigitalBookService {
         return bookResponseList;
     }
 
-    public Payment buyBook(Integer userId, Integer bookId) throws SQLException, DigitalBookException {
+    public Payment buyBook(Integer userId, PaymentRequest request) throws SQLException, DigitalBookException {
         try {
             Book book = new Book();
-            book.setBookId(bookId);
+            book.setBookId(request.getBookId());
             User user = new User();
             user.setId(userId);
             Payment payment = new Payment(new Date(), book, user);
+            payment.setTitle(request.getBookName());
             return paymentRepository.save(payment);
         } catch (Exception e) {
             throw new DigitalBookException("Exception while persisting into db please try again");
@@ -112,7 +114,7 @@ public class DigitalBookService {
         if (!paymentList.isEmpty()) {
             List<PaymentModel> paymentModels = new ArrayList<>();
             paymentList.forEach(payment ->
-                    paymentModels.add(new PaymentModel(payment.getPaymentId(), payment.getPaymentDate(), payment.getUser().getUsername(), payment.getBook().getBookId()))
+                    paymentModels.add(new PaymentModel(payment.getPaymentId(), payment.getPaymentDate(), payment.getUser().getUsername(), payment.getBook().getBookId(),payment.getTitle()))
             );
             return paymentModels;
         } else {

@@ -42,16 +42,16 @@ public class DigitalBookReaderControllerTest {
     public void buyBook() throws Exception{
         PaymentRequest paymentRequest = new PaymentRequest();
         paymentRequest.setBookId(123);
-        paymentRequest.setUserId(123);
-        Mockito.when(userService.buyBook(113,123)).thenReturn(new Payment(new Date(),null,null));
-        ResponseEntity<?> res = digitalBookReaderController.buyBook(113,123);
+        paymentRequest.setBookName("java");
+        Mockito.when(userService.buyBook(113,paymentRequest)).thenReturn(new Payment(new Date(),null,null));
+        ResponseEntity<?> res = digitalBookReaderController.buyBook(113,paymentRequest);
         Assert.assertNotNull(res);
 
     }
 
     @Test
     public void readPaymentDetails() {
-        PaymentModel paymentModel = new PaymentModel(12l,new Date(),"abc",123);
+        PaymentModel paymentModel = new PaymentModel(12l,new Date(),"abc",123,"java");
         List<PaymentModel> paymentModels = new ArrayList<>();
         paymentModels.add(paymentModel);
         Mockito.when(userService.getPaymentDetails(123)).thenReturn(paymentModels);
@@ -69,7 +69,7 @@ public class DigitalBookReaderControllerTest {
 
     @Test
     public void getPaymentById() {
-        PaymentModel paymentModel = new PaymentModel(12l,new Date(),"abc",123);
+        PaymentModel paymentModel = new PaymentModel(12l,new Date(),"abc",123,"java");
         List<PaymentModel> paymentModels = new ArrayList<>();
         paymentModels.add(paymentModel);
         Mockito.when(userService.getPaymentDetailsById(12l)).thenReturn(paymentModel);

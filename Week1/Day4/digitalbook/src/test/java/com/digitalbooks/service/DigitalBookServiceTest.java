@@ -107,13 +107,13 @@ public class DigitalBookServiceTest {
     public void buyBook() throws Exception {
         PaymentRequest paymentRequest = new PaymentRequest();
         paymentRequest.setBookId(123);
-        paymentRequest.setUserId(123);
+        paymentRequest.setBookName("java");
         User user = new User();
-        user.setId(paymentRequest.getUserId());
+        user.setId(123);
         Book book = new Book("title", "publisher", new Date(), "category", 20l, true, user, "content");
         Payment payment = new Payment(new Date(), book, user);
         Mockito.when(paymentRepository.save(Mockito.any())).thenReturn(payment);
-        Payment p = digitalBookService.buyBook(123, 123);
+        Payment p = digitalBookService.buyBook(123, paymentRequest);
         Assert.assertNotNull(p);
     }
 

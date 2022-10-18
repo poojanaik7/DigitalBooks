@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
+@Table(name = "payments")
 public class Payment {
 
     @Id
@@ -19,6 +20,8 @@ public class Payment {
 
     @ManyToOne
     private User user;
+
+    private String title;
 
     public Payment() {
     }
@@ -59,5 +62,13 @@ public class Payment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
